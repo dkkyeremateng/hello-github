@@ -1,0 +1,20 @@
+# Verification for dkkyeremateng/hello-github.
+#
+# The factory resolves this file from the PINNED base commit, never from the
+# workspace the agent can write to, so an agent that edits it in its sandbox
+# changes nothing about what actually runs.
+#
+# Commands are matched EXACTLY and the list is an allowlist: anything not
+# written here fails closed. Keep each entry a literal command line.
+commands:
+  - node .agents/check.mjs
+
+# The whole verification run is bounded. This repository is two files, so the
+# check is fast; the ceiling exists for the case where something hangs.
+timeout_seconds: 120
+memory_mb: 512
+
+# Verification needs no egress at all: the check has no dependencies and fetches
+# nothing. Denying the network outright means a verification step can never
+# become a way out of the sandbox.
+network: none
